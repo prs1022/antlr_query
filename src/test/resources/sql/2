@@ -1,0 +1,1 @@
+select a from b where (c=1 and c=2 and (c=3 or (c=4 and c=5)))

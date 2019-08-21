@@ -1,0 +1,39 @@
+bb.dim_date_id
+
+bb.type_name
+
+bb.shop_code
+
+bb.shop_name
+
+bb.city_name
+
+bb.seller_type_name
+
+bb.order_channle_name
+
+bb.order_type
+
+bb.cus_cn
+
+case when (ifnull(bb.cus_cn_2,0)+ifnull(bb.cus_cn_3,0)+ifnull(bb.cus_cn_4,0)+ifnull(bb.cus_cn_5,0))=0 then null
+     else  ifnull(bb.cus_cn_2,0)+ifnull(bb.cus_cn_3,0)+ifnull(bb.cus_cn_4,0)+ifnull(bb.cus_cn_5,0) end as cus_cn_2
+
+case when (ifnull(bb.cus_cn_2/bb.cus_cn,0)+ifnull(bb.cus_cn_3/bb.cus_cn,0)+ifnull(bb.cus_cn_4/bb.cus_cn,0)+ifnull(bb.cus_cn_5/bb.cus_cn,0))=0 then null
+     else ifnull(bb.cus_cn_2/bb.cus_cn,0)+ifnull(bb.cus_cn_3/bb.cus_cn,0)+ifnull(bb.cus_cn_4/bb.cus_cn,0)+ifnull(bb.cus_cn_5/bb.cus_cn,0) end as fg_rate_2
+
+case when (ifnull(bb.cus_cn_3,0)+ifnull(bb.cus_cn_4,0)+ifnull(bb.cus_cn_5,0))=0 then null
+     else ifnull(bb.cus_cn_3,0)+ifnull(bb.cus_cn_4,0)+ifnull(bb.cus_cn_5,0) end as cus_cn_3
+
+case when (ifnull(bb.cus_cn_3/bb.cus_cn,0)+ifnull(bb.cus_cn_4/bb.cus_cn,0)+ifnull(bb.cus_cn_5/bb.cus_cn,0))=0 then null
+     else ifnull(bb.cus_cn_3/bb.cus_cn,0)+ifnull(bb.cus_cn_4/bb.cus_cn,0)+ifnull(bb.cus_cn_5/bb.cus_cn,0) end as fg_rate_3
+
+case when (ifnull(bb.cus_cn_4,0)+ifnull(bb.cus_cn_5,0))=0 then null
+     else ifnull(bb.cus_cn_4,0)+ifnull(bb.cus_cn_5,0) end as cus_cn_4
+
+case when (ifnull(bb.cus_cn_4/bb.cus_cn,0)+ifnull(bb.cus_cn_5/bb.cus_cn,0))=0 then null
+     else ifnull(bb.cus_cn_4/bb.cus_cn,0)+ifnull(bb.cus_cn_5/bb.cus_cn,0) end as fg_rate_4
+
+bb.cus_cn_5
+
+bb.cus_cn_5/bb.cus_cn as fg_rate_5

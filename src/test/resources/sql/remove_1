@@ -1,0 +1,1 @@
+select t1.xx,t2.xx from A  t1 cross join B as t2  join C t3 on t1.xx=t3.xx join D t4 on t4.xx = 1 where t1.xx = 1

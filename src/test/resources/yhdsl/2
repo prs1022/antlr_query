@@ -1,0 +1,1 @@
+querySpecification is( tableName:text("A")) selectItem

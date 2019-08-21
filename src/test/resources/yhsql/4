@@ -1,0 +1,1 @@
+select a.org_name as label,a.org_id as value from (select t.org_name,t.org_code as org_id from platform.dim_shop20181114 as t where seller_type_id='0' and open_date is not null and `status`=1 group by org_code) as a

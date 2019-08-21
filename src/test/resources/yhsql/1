@@ -1,0 +1,41 @@
+select
+bb.dim_date_id,
+bb.type_name,
+bb.shop_code,
+bb.shop_name,
+bb.city_name,
+bb.seller_type_name,
+bb.order_channle_name,
+bb.order_type,
+bb.cus_cn,
+case when (ifnull(bb.cus_cn_2,0)+ifnull(bb.cus_cn_3,0)+ifnull(bb.cus_cn_4,0)+ifnull(bb.cus_cn_5,0))=0 then null
+     else  ifnull(bb.cus_cn_2,0)+ifnull(bb.cus_cn_3,0)+ifnull(bb.cus_cn_4,0)+ifnull(bb.cus_cn_5,0) end as cus_cn_2,
+case when (ifnull(bb.cus_cn_2/bb.cus_cn,0)+ifnull(bb.cus_cn_3/bb.cus_cn,0)+ifnull(bb.cus_cn_4/bb.cus_cn,0)+ifnull(bb.cus_cn_5/bb.cus_cn,0))=0 then null
+     else ifnull(bb.cus_cn_2/bb.cus_cn,0)+ifnull(bb.cus_cn_3/bb.cus_cn,0)+ifnull(bb.cus_cn_4/bb.cus_cn,0)+ifnull(bb.cus_cn_5/bb.cus_cn,0) end as fg_rate_2,
+case when (ifnull(bb.cus_cn_3,0)+ifnull(bb.cus_cn_4,0)+ifnull(bb.cus_cn_5,0))=0 then null
+     else ifnull(bb.cus_cn_3,0)+ifnull(bb.cus_cn_4,0)+ifnull(bb.cus_cn_5,0) end as cus_cn_3,
+case when (ifnull(bb.cus_cn_3/bb.cus_cn,0)+ifnull(bb.cus_cn_4/bb.cus_cn,0)+ifnull(bb.cus_cn_5/bb.cus_cn,0))=0 then null
+     else ifnull(bb.cus_cn_3/bb.cus_cn,0)+ifnull(bb.cus_cn_4/bb.cus_cn,0)+ifnull(bb.cus_cn_5/bb.cus_cn,0) end as fg_rate_3,
+case when (ifnull(bb.cus_cn_4,0)+ifnull(bb.cus_cn_5,0))=0 then null
+     else ifnull(bb.cus_cn_4,0)+ifnull(bb.cus_cn_5,0) end as cus_cn_4,
+case when (ifnull(bb.cus_cn_4/bb.cus_cn,0)+ifnull(bb.cus_cn_5/bb.cus_cn,0))=0 then null
+     else ifnull(bb.cus_cn_4/bb.cus_cn,0)+ifnull(bb.cus_cn_5/bb.cus_cn,0) end as fg_rate_4,
+bb.cus_cn_5,
+bb.cus_cn_5/bb.cus_cn as fg_rate_5
+from (
+ select aa.dim_date_id,
+		aa.type_name,
+		aa.seller_type_name,
+		aa.city_name,
+        aa.shop_code,
+        aa.shop_name,
+		aa.order_channle_name,
+		aa.order_type,
+		aa.cus_cn,
+		aa.cus_cn_2,
+		aa.cus_cn_3  ,
+		aa.cus_cn_4,
+		aa.cus_cn_5 from  report_center.fct_member_fg_rate_seller_city_shop aa
+		where  aa.dim_date_id=DATE_FORMAT('#s_date#','%Y%m%d')
+     and aa.type_id='#type_id#'
+) bb where bb.seller_type_name is not null;

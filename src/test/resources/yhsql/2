@@ -1,0 +1,98 @@
+select *
+from
+	(select
+	'#s_date#' s_date
+	,'#e_date#' e_date
+	,are_code
+	,are_name
+	,org_code
+	,org_name
+	,1 as region_code
+	,org_name as region_name
+	-- 结果
+	,round(sum(sale_amt),0) sale_amt -- 销售收入
+	,round(sum(order_cnt),0) order_cnt -- 成交单量
+	,round(sum(coupon_amt),0) coupon_amt -- 优惠券
+	,round(sum(point_amt),0) point_amt -- 积分
+	,round(sum(member_sale_amt),0) member_sale_amt -- 会员销售额
+	,round(sum(member_sale_amt)/sum(sale_amt),4) member_sale_amt_zb -- 会员销售占比
+	,round(sum(new_member_sale_amt),0) new_member_sale_amt -- 新会员销售额
+	,round(sum(new_member_sale_amt)/sum(sale_amt),4) new_member_sale_amt_zb -- 新会员销售占比
+	,round(sum(deliver_sale_amt),0) deliver_sale_amt -- 配送销售额
+	,round(sum(deliver_sale_amt)/sum(sale_amt),4) deliver_sale_amt_zb -- 配送销售占比
+	-- 原因定位
+	,sum(lack_sku_cnt) lack_sku_cnt -- 履单缺货品项
+	,sum(shelve_sku_cnt) shelve_sku_cnt -- 上架品项
+	,round(sum(lack_sku_cnt)/sum(shelve_sku_cnt),4)  ld_lack_sku_rate -- 履单缺货率
+	,sum(ncmt_order_cnt) ncmt_order_cnt -- 差评单量
+	,sum(cmt_order_cnt) cmt_order_cnt -- 参评单量
+	,round(sum(ncmt_order_cnt)/sum(cmt_order_cnt),4) ncmt_order_rate -- 差评率
+	,sum(sale_sku_cnt) sale_sku_cnt -- 动销有效品项
+	,sum(onsale_sku_cnt) onsale_sku_cnt -- 有效品项
+	,round(sum(sale_sku_cnt)/sum(onsale_sku_cnt),4)  sale_sku_rate --  动销率
+	from
+		rpt_yhsh.kpi_day_shop_ot_channel_group_class_mcat_biz_sale
+	where dim_id='T0002' -- 日/大区/业态区
+		  and date_key between DATE_FORMAT('#s_date#','%Y%m%d')  and DATE_FORMAT('#e_date#','%Y%m%d')
+	group by
+	'#s_date#'
+	,'#e_date#'
+	,are_code
+	,are_name
+	,org_code
+	,org_name
+
+	union all
+
+	select
+	'#s_date#' s_date
+	,'#e_date#' e_date
+	,are_code
+	,are_name
+	,org_code
+	,org_name
+	,region_code
+	,concat('--',region_name) region_name
+	-- 结果
+	,round(sum(sale_amt),0) sale_amt -- 销售收入
+	,round(sum(order_cnt),0) order_cnt -- 成交单量
+	,round(sum(coupon_amt),0) coupon_amt -- 优惠券
+	,round(sum(point_amt),0) point_amt -- 积分
+	,round(sum(member_sale_amt),0) member_sale_amt -- 会员销售额
+	,round(sum(member_sale_amt)/sum(sale_amt),4) member_sale_amt_zb -- 会员销售占比
+	,round(sum(new_member_sale_amt),0) new_member_sale_amt -- 新会员销售额
+	,round(sum(new_member_sale_amt)/sum(sale_amt),4) new_member_sale_amt_zb -- 新会员销售占比
+	,round(sum(deliver_sale_amt),0) deliver_sale_amt -- 配送销售额
+	,round(sum(deliver_sale_amt)/sum(sale_amt),4) deliver_sale_amt_zb -- 配送销售占比
+	-- 原因定位
+	,sum(lack_sku_cnt) lack_sku_cnt -- 履单缺货品项
+	,sum(shelve_sku_cnt) shelve_sku_cnt -- 上架品项
+	,round(sum(lack_sku_cnt)/sum(shelve_sku_cnt),4)  ld_lack_sku_rate -- 履单缺货率
+	,sum(ncmt_order_cnt) ncmt_order_cnt -- 差评单量
+	,sum(cmt_order_cnt) cmt_order_cnt -- 参评单量
+	,round(sum(ncmt_order_cnt)/sum(cmt_order_cnt),4) ncmt_order_rate -- 差评率
+	,sum(sale_sku_cnt) sale_sku_cnt -- 动销有效品项
+	,sum(onsale_sku_cnt) onsale_sku_cnt -- 有效品项
+	,round(sum(sale_sku_cnt)/sum(onsale_sku_cnt),4) sale_sku_rate  -- 动销率
+	from
+		rpt_yhsh.kpi_day_shop_ot_channel_group_class_mcat_biz_sale
+	where dim_id='T0003' -- 日/大区/业态区/区域
+		  and date_key between DATE_FORMAT('#s_date#','%Y%m%d')  and DATE_FORMAT('#e_date#','%Y%m%d')
+	group by
+	'#s_date#'
+	,'#e_date#'
+	,are_code
+	,are_name
+	,org_code
+	,org_name
+	,region_code
+	,concat('--',region_name)
+	) tt
+where org_name != '-'
+order by
+   are_code
+	,are_name
+	,org_code
+	,org_name
+	,region_code
+	,region_name

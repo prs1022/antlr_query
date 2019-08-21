@@ -1,0 +1,1 @@
+select t1.xx from A t1 join B t2 cross join C on t1.ss = ss where t1.xx = 1

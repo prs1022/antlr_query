@@ -1,0 +1,1 @@
+querySpecification:is(>selectItem>identifier:text(\w+)):is( *:not(subqueryRelation) tableName:text(vipdm.*+))

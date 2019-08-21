@@ -1,0 +1,1 @@
+querySpecification:is(>selectSingle functionCall:text(^VMA_LISP_EMBED_AGG_.+))

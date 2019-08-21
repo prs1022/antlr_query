@@ -1,0 +1,1 @@
+where+((booleanExpression>),(booleanExpression( :not(logicalBinary:is(>or)))logicalBinary:is(>and):is(>booleanExpression:not( logicalBinary)) ))predicated:is(>predicate)

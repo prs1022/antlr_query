@@ -1,0 +1,1 @@
+select t1 . xx , t2 . xx from A t1 cross join B as t2 where t1 . xx = 1

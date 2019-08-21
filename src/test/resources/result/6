@@ -1,0 +1,5 @@
+A t1 join B t2 on t1.ss=1 join C t3 on t3.ss=1
+A t1 join B t2 on t1.ss=1
+A t1
+B t2
+C t3

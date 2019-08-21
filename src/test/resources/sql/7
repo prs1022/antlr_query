@@ -1,0 +1,1 @@
+select * from a join b on a.xx=b.xx join c on a.xx=c.xx join (select 1) as t on a.xx=t.xx

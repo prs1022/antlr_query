@@ -1,0 +1,71 @@
+select  '#s_date#' as s_date
+	,s.department_code
+	,s.department_name
+	,s.are_code
+	,s.are_name
+	,s.org_code
+	,s.org_name
+	,s.region_code
+	,s.region_name
+	,s.province_code
+	,s.province_name
+	,s.city_code
+	,s.city_name
+	,s.seller_type_id
+	,s.seller_type_name
+	,s.dim_shop_id
+	,s.shop_name
+	,count(distinct
+		if(substring(cast(mf.first_complete_at as varchar),1,10) = '#s_date#'
+			,mf.member_id
+		,null)
+	) as day_reg_cnt
+	,count(distinct
+		if(substring(cast(mf.created_at as varchar),1,10) = '#s_date#'
+			,mf.member_id
+		,null)
+	) as day_sup_cnt
+	,count(distinct
+		if(substring(cast(mf.first_complete_at as varchar),1,10) between concat(substring('#s_date#',1,8),'01') and '#s_date#'
+			,mf.member_id
+		,null)
+	) as mon_reg_cnt
+	,count(distinct
+		if(substring(cast(mf.created_at as varchar),1,10) between concat(substring('#s_date#',1,8),'01') and '#s_date#'
+			,mf.member_id
+		,null)
+	) as mon_sup_cnt
+	,count(distinct
+		if(substring(cast(mf.first_complete_at as varchar),1,10) <= '#s_date#'
+			,mf.member_id
+		,null)
+	) as all_reg_cnt
+	,count(distinct
+		if(substring(cast(mf.created_at as varchar),1,10) <= '#s_date#'
+			,mf.member_id
+		,null)
+	) as all_sup_cnt
+from fdm.dim_member_first mf
+join dim.dim_shop s on mf.first_complete_shop_id = s.dim_shop_id
+where mf.status = 0
+	and mf.signup_time is not null
+	and mf.first_channel_id IN (101,103,104,105)
+       and s.seller_type_id='#seller_type_id#'
+      and s.province_id   in (${#province_id#}$)
+group by
+	s.department_code
+	,s.department_name
+	,s.are_code
+	,s.are_name
+	,s.org_code
+	,s.org_name
+	,s.region_code
+	,s.region_name
+	,s.province_code
+	,s.province_name
+	,s.city_code
+	,s.city_name
+	,s.seller_type_id
+	,s.seller_type_name
+	,s.dim_shop_id
+	,s.shop_name

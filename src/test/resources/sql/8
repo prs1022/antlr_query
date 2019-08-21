@@ -1,0 +1,2 @@
+select * from t where
+(a1=1 and (b1=1 or (b2=2 and b3=3)) and a2=2 ) and a3=3

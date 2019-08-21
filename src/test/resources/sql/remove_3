@@ -1,0 +1,32 @@
+SELECT
+  NULLIF(
+    (
+      COUNT(
+        DISTINCT (
+          CASE
+            (
+              COALESCE (t21056.add_to_ship_hours, 0)
+            )
+            WHEN 0
+            THEN NULL
+            ELSE t21056.order_id
+          END
+        )
+      )
+    ),
+    0
+  ) AS "1000838_0"
+FROM
+  vipdm.dm_log_order_analysis_hm AS t21056
+  JOIN
+    (SELECT DISTINCT
+      user_id
+    FROM
+      vipss.av_tmp_exp_0_1658abab67f9416489e62ac4f2661a7a) AS t_user_group
+    ON t21056.user_id = t_user_group.user_id
+WHERE t21056.log_date BETWEEN '2017-02-07'
+  AND '2017-03-07'
+  AND t21056.app_name IN ('特卖会')
+  AND t21056.is_valid_order IN ('合格订单')
+  AND t21056.dt BETWEEN '20170207'
+  AND '20170307'

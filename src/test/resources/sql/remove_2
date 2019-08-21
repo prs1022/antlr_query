@@ -1,0 +1,83 @@
+SELECT 
+  VMA_LISP_EMBED_AGG_21150_sum (
+    MAX(
+      COALESCE (t21056.add_to_ship_hours, 0)
+    )
+  ) AS "1000838" 
+FROM
+  vipdm.dm_log_order_analysis_hm AS t21056 
+  JOIN vipdm.dm_log_user_base_hm AS t2200 
+    ON t21056.user_id = t2200.user_id 
+  JOIN 
+    (SELECT 
+      sub_0."va_dimension_1000835",
+      sub_0."21124",
+      sub_0."21057",
+      COALESCE (
+        (sub_1."1000838") * 1.0 / sub_0."1000838_0",
+        0
+      ) AS "1000838" 
+    FROM
+      (SELECT 
+        COUNT(DISTINCT t2200.rtrs_opt_group) AS "va_dimension_1000835",
+        SUM(t21056.cut_goods_money) AS "21124",
+        t21056.log_date AS "21057",
+        NULLIF(
+          (
+            COUNT(
+              DISTINCT (
+                CASE
+                  (
+                    COALESCE (t21056.add_to_ship_hours, 0)
+                  ) 
+                  WHEN 0 
+                  THEN NULL 
+                  ELSE t21056.order_id 
+                END
+              )
+            )
+          ),
+          0
+        ) AS "1000838_0" 
+      FROM
+        vipdm.dm_log_order_analysis_hm AS t21056 
+        JOIN vipdm.dm_log_user_base_hm AS t2200 
+          ON t21056.user_id = t2200.user_id 
+      WHERE t21056.log_date BETWEEN '2017-02-07' 
+        AND '2017-03-07' 
+        AND t21056.app_name IN ('特卖会') 
+        AND t21056.is_valid_order IN ('合格订单') 
+        AND t21056.dt BETWEEN '20170207' 
+        AND '20170307' 
+      GROUP BY t21056.log_date) AS sub_0 FULL 
+      JOIN 
+        (SELECT 
+          t."21057",
+          SUM(t."1000838") AS "1000838" 
+        FROM
+          (SELECT 
+            MAX(
+              COALESCE (t21056.add_to_ship_hours, 0)
+            ) AS "1000838",
+            t21056.log_date AS "21057",
+            order_id 
+          FROM
+            vipdm.dm_log_order_analysis_hm AS t21056 
+          WHERE t21056.log_date BETWEEN '2017-02-07' 
+            AND '2017-03-07' 
+            AND t21056.app_name IN ('特卖会') 
+            AND t21056.is_valid_order IN ('合格订单') 
+            AND t21056.dt BETWEEN '20170207' 
+            AND '20170307' 
+          GROUP BY t21056.log_date,
+            order_id) AS t 
+        GROUP BY t."21057") AS sub_1 
+        ON sub_0."21057" = sub_1."21057" 
+    WHERE "1000838" >= 30) AS t_origin 
+    ON t21056."log_date" = t_origin."21057" 
+WHERE t21056.log_date BETWEEN '2017-02-07' 
+  AND '2017-03-07' 
+  AND t21056.app_name IN ('特卖会') 
+  AND t21056.is_valid_order IN ('合格订单') 
+  AND t21056.dt BETWEEN '20170207' 
+  AND '20170307' 

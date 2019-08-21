@@ -1,0 +1,5 @@
+log_date BETWEEN '2016-01-01' AND '2017-01-24'
+
+app_name IN ('特卖会')
+
+dt BETWEEN '20160101' AND '20170124'

@@ -1,0 +1,12 @@
+SELECT 
+  approx_distinct (MID, 0.0115) AS "21083",
+  log_date AS "21075" 
+FROM
+  vipdm.dm_log_traffic_pageview_day 
+WHERE log_date BETWEEN '2016-01-01' 
+  AND '2017-01-24' 
+  AND app_name IN ('特卖会') 
+  AND dt BETWEEN '20160101' 
+  AND '20170124' 
+GROUP BY log_date 
+LIMIT 100001 

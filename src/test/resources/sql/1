@@ -1,0 +1,20 @@
+SELECT
+  COUNT(DISTINCT t21056.user_id) AS "21073",
+  t21092.brand_name AS "21101"
+FROM
+  vipdm.dm_log_order_analysis_hm AS t21056
+  JOIN vipdm.dim_prd_brand AS t21092
+    ON t21056.brand_id = t21092.brand_id
+WHERE (
+    t21056.log_date BETWEEN '2016-12-12'
+    AND '2016-12-12'
+    AND t21056.app_name IN ('特卖会')
+    AND t21056.is_valid_order IN ('合格订单')
+    AND t21092.brand_id IN (955032)
+    AND t21056.brand_id IN (955032)
+    AND t21056.dt BETWEEN '20161212'
+    AND '20161212'
+  )
+  AND t21056.brand_id > 0
+GROUP BY t21092.brand_name
+LIMIT 100001

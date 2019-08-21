@@ -1,0 +1,26 @@
+SELECT
+  VMA_LISP_EMBED_AGG_21150_sum (
+    MAX(
+      (
+        COALESCE (
+          (
+            CAST(
+              (
+                date_diff ('second', add_time, receipt_time)
+              ) AS DOUBLE
+            )
+          ) * 1.0 / NULLIF(3600, 0),
+          0
+        )
+      )
+    )
+  ) AS "1000827"
+FROM
+  vipdm.dm_log_order_analysis_hm
+WHERE log_date BETWEEN '2017-02-22'
+  AND '2017-02-22'
+  AND app_name IN ('特卖会')
+  AND is_valid_order IN ('合格订单')
+  AND dt BETWEEN '20170222'
+  AND '20170222'
+LIMIT 100001
